@@ -7,7 +7,7 @@ namespace ITServiceApp.Domain.Models
         public Guid Id { get; set; }
         public string RequestNumber { get; set; }
         public Client Client { get; set; }
-        public Engineer Engineer { get; set; }
+        public Engineer? Engineer { get; set; }
         public string EquipmentType { get; set; }
         public string EquipmentModel { get; set; }
         public string ProblemDescription { get; set; }
@@ -18,7 +18,7 @@ namespace ITServiceApp.Domain.Models
 
         public ServiceRequest()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.Empty;
             RequestNumber = GenerateRequestNumber();
             Client = new Client();
             Engineer = null;
@@ -42,11 +42,7 @@ namespace ITServiceApp.Domain.Models
             {
                 Id = Id,
                 RequestNumber = RequestNumber,
-                Client = new Client
-                {
-                    Name = Client.Name,
-                    Phone = Client.Phone
-                },
+                Client = Client.Clone(),
                 Engineer = Engineer,
                 EquipmentType = EquipmentType,
                 EquipmentModel = EquipmentModel,

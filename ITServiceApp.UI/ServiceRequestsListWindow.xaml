@@ -1,0 +1,62 @@
+﻿<Window x:Class="ITServiceApp.UI.ServiceRequestsListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:ITServiceApp.UI.Converters"
+        Title="Система учета заявок IT-оборудования" Height="600" Width="1200"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <converters:RequestStatusConverter x:Key="StatusConverter"/>
+        <converters:DateTimeConverter x:Key="DateTimeConverter"/>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Учет заявок на обслуживание IT-оборудования" 
+                   FontSize="18" FontWeight="Bold" Margin="0,0,0,15"
+                   HorizontalAlignment="Center"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
+            <Button Content="Добавить заявку" Click="AddRequest_Click" 
+                    Width="120" Height="30" Margin="0,0,10,0"/>
+            <Button Content="Редактировать" Click="EditRequest_Click" 
+                    Width="120" Height="30" Margin="0,0,10,0"/>
+            <Button Content="Удалить" Click="DeleteRequest_Click" 
+                    Width="80" Height="30" Margin="0,0,10,0"/>
+            <Button Content="Обновить" Click="RefreshButton_Click" 
+                    Width="80" Height="30" Margin="0,0,10,0"/>
+            <Button Content="Статистика" Click="ShowStatistics_Click" 
+                    Width="100" Height="30"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="2" x:Name="RequestsGrid" AutoGenerateColumns="False" 
+                  SelectionMode="Single" IsReadOnly="True"
+                  CanUserAddRows="False" CanUserDeleteRows="False"
+                  ItemsSource="{Binding ServiceRequests}"
+                  SelectedItem="{Binding SelectedServiceRequest}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Номер" Binding="{Binding RequestNumber}" Width="90"/>
+                <DataGridTextColumn Header="Дата" Binding="{Binding CreationDate, Converter={StaticResource DateTimeConverter}}" Width="100"/>
+                <DataGridTextColumn Header="Клиент" Binding="{Binding Client.Name}" Width="150"/>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Client.Phone}" Width="120"/>
+                <DataGridTextColumn Header="Тип оборудования" Binding="{Binding EquipmentType}" Width="140"/>
+                <DataGridTextColumn Header="Модель" Binding="{Binding EquipmentModel}" Width="120"/>
+                <DataGridTextColumn Header="Инженер" Binding="{Binding Engineer.Name}" Width="150"/>
+                <DataGridTemplateColumn Header="Статус" Width="130">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Status, Converter={StaticResource StatusConverter}}"
+                                       FontWeight="Bold"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Проблема" Binding="{Binding ProblemDescription}" Width="200"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

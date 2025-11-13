@@ -65,6 +65,51 @@ namespace ITServiceApp.UI
                 Comments = "Требуется диагностика",
                 OrderedParts = ""
             });
+
+            // ДОБАВЛЯЕМ тестовые данные для статистики
+            var random = new Random();
+            var statuses = new[]
+            {
+        RequestStatus.Created,
+        RequestStatus.InProgress,
+        RequestStatus.WaitingForParts,
+        RequestStatus.Completed
+    };
+
+            var equipmentTypes = new[]
+            {
+        "Компьютер", "Сервер", "Принтер", "Монитор", "Ноутбук",
+        "Сетевое оборудование", "Сканер", "ИБП", "МФУ"
+    };
+
+            var clientNames = new[]
+            {
+        "Сидорова Анна", "Кузнецов Алексей", "Смирнова Мария", "Попов Дмитрий",
+        "Васильева Елена", "Новиков Сергей", "Федоров Игорь", "Орлова Ольга"
+    };
+
+            // Генерируем 30 дополнительных тестовых заявок
+            for (int i = 0; i < 30; i++)
+            {
+                var request = new ServiceRequest
+                {
+                    Id = Guid.Empty,
+                    Client = new Client
+                    {
+                        Name = clientNames[random.Next(clientNames.Length)],
+                        Phone = $"+7(999){random.Next(100, 999)}-{random.Next(10, 99)}-{random.Next(10, 99)}"
+                    },
+                    Engineer = engineers[random.Next(engineers.Count)],
+                    EquipmentType = equipmentTypes[random.Next(equipmentTypes.Length)],
+                    EquipmentModel = $"Model {random.Next(1000, 9999)}",
+                    ProblemDescription = $"Тестовое описание проблемы {i + 1}",
+                    CreationDate = DateTime.Now.AddDays(-random.Next(0, 180)),
+                    Status = statuses[random.Next(statuses.Length)],
+                    Comments = $"Тестовый комментарий {i + 1}",
+                    OrderedParts = random.Next(0, 3) == 0 ? $"Запчасть {random.Next(1, 10)}" : ""
+                };
+                _requestRepository.Add(request);
+            }
         }
     }
 }

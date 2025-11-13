@@ -9,9 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ITServiceApp.Data.InMemory\ITServiceApp.Data.InMemory.csproj" />
     <ProjectReference Include="..\ITServiceApp.Data.Interfaces\ITServiceApp.Data.Interfaces.csproj" />
     <ProjectReference Include="..\ITServiceApp.Domain\ITServiceApp.Domain.csproj" />
+    <ProjectReference Include="..\ITServiceApp.Services\ITServiceApp.Services.csproj" />
   </ItemGroup>
 
 </Project>

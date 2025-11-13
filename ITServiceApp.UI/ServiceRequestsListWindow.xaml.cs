@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ITServiceApp.Data.Interfaces;
+using ITServiceApp.Domain.Models;
+using ITServiceApp.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using ITServiceApp.Data.Interfaces;
-using ITServiceApp.Domain.Models;
 
 namespace ITServiceApp.UI
 {
@@ -27,7 +28,7 @@ namespace ITServiceApp.UI
 
         private void LoadServiceRequests()
         {
-            var requests = _requestRepository.GetAll();
+            var requests = _requestRepository.GetAll(ServiceRequestFilter.Empty);
             ServiceRequests.Clear();
             foreach (var request in requests)
             {
@@ -99,25 +100,12 @@ namespace ITServiceApp.UI
             LoadServiceRequests();
         }
 
-        private void ShowStatistics_Click(object sender, RoutedEventArgs e)
+       
+        private void StatisticsButton_Click(object sender, RoutedEventArgs e)
         {
-            var requests = _requestRepository.GetAll();
-            var totalRequests = requests.Count;
-            var completedRequests = requests.Count(r => r.Status == RequestStatus.Completed);
-            var inProgressRequests = requests.Count(r => r.Status == RequestStatus.InProgress);
-            var waitingRequests = requests.Count(r => r.Status == RequestStatus.WaitingForParts);
-            var newRequests = requests.Count(r => r.Status == RequestStatus.Created);
-
-            MessageBox.Show(
-                $"Статистика заявок:\n\n" +
-                $"Всего заявок: {totalRequests}\n" +
-                $"Завершено: {completedRequests}\n" +
-                $"В процессе: {inProgressRequests}\n" +
-                $"Ожидание запчастей: {waitingRequests}\n" +
-                $"Новых: {newRequests}",
-                "Статистика",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            var statisticsService = new StatisticsService(_requestRepository);
+            var window = new StatisticsWindow(statisticsService);
+            window.ShowDialog();
         }
     }
 }

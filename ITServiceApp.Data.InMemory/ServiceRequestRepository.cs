@@ -11,7 +11,7 @@ namespace ITServiceApp.Data.InMemory
     {
         private readonly List<ServiceRequest> _requests = new List<ServiceRequest>();
 
-        public List<ServiceRequest> GetAll()
+        public List<ServiceRequest> GetAll(ServiceRequestFilter filter)
         {
             return _requests.Select(r => r.Clone()).ToList();
         }

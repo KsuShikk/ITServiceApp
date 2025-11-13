@@ -1,0 +1,48 @@
+﻿<Window x:Class="ITServiceApp.UI.StatisticsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:converters="clr-namespace:ITServiceApp.UI.Converters"
+        Title="Статистика заявок" Height="800" Width="1200">
+    <Window.Resources>
+        <converters:DateTimeConverter x:Key="DateTimeConverter"/>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <TextBlock Grid.Row="0" Text="Статистика заявок"
+                   FontSize="24" FontWeight="Bold" Margin="0,0,0,10"/>
+
+        <!-- Панель фильтрации -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
+            <TextBlock Text="Период с:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <DatePicker SelectedDate="{Binding StartDate, Converter={StaticResource DateTimeConverter}, ConverterParameter=DateTime}"
+                        Width="120" Margin="0,0,15,0"/>
+            <TextBlock Text="по:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <DatePicker SelectedDate="{Binding EndDate, Converter={StaticResource DateTimeConverter}, ConverterParameter=DateTime}"
+                        Width="120" Margin="0,0,15,0"/>
+            <Button Content="Применить фильтр" Width="130" Height="30"
+                    Click="ApplyFilterButton_Click"/>
+            <Button Content="Сбросить" Width="100" Height="30"
+                    Margin="10,0,0,0" Click="ResetFilterButton_Click"/>
+        </StackPanel>
+
+        <!-- Контейнер для диаграмм -->
+        <TabControl Grid.Row="2">
+            <TabItem Header="По статусам">
+                <oxy:PlotView Model="{Binding StatusPlotModel}" Margin="10"/>
+            </TabItem>
+            <TabItem Header="По инженерам">
+                <oxy:PlotView Model="{Binding EngineerPlotModel}" Margin="10"/>
+            </TabItem>
+            <TabItem Header="По месяцам">
+                <oxy:PlotView Model="{Binding MonthPlotModel}" Margin="10"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

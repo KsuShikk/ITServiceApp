@@ -5,7 +5,7 @@
         xmlns:converters="clr-namespace:ITServiceApp.UI.Converters"
         Title="Статистика заявок" Height="800" Width="1200">
     <Window.Resources>
-        <converters:DateTimeConverter x:Key="DateTimeConverter"/>
+       
     </Window.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -21,10 +21,10 @@
         <!-- Панель фильтрации -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
             <TextBlock Text="Период с:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <DatePicker SelectedDate="{Binding StartDate, Converter={StaticResource DateTimeConverter}, ConverterParameter=DateTime}"
+            <DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Width="120" Margin="0,0,15,0"/>
             <TextBlock Text="по:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <DatePicker SelectedDate="{Binding EndDate, Converter={StaticResource DateTimeConverter}, ConverterParameter=DateTime}"
+            <DatePicker SelectedDate="{Binding EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Width="120" Margin="0,0,15,0"/>
             <Button Content="Применить фильтр" Width="130" Height="30"
                     Click="ApplyFilterButton_Click"/>

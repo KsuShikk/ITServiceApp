@@ -1,4 +1,5 @@
 ﻿using ITServiceApp.Data.Interfaces;
+using ITServiceApp.Data.SqlServer;
 using ITServiceApp.Domain.Models;
 using ITServiceApp.Services;
 using System;
@@ -20,7 +21,7 @@ namespace ITServiceApp.UI
         {
             InitializeComponent();
             _requestRepository = requestRepository;
-            _engineerRepository = engineerRepository;
+            _engineerRepository = engineerRepository; // если у тебя другое имя поля — оставь свое
             ServiceRequests = new ObservableCollection<ServiceRequest>();
             DataContext = this;
             LoadServiceRequests();
@@ -56,7 +57,8 @@ namespace ITServiceApp.UI
                 var updatedRequest = ServiceRequestEditWindow.Edit(selectedRequest, _engineerRepository);
                 if (updatedRequest != null)
                 {
-                    _requestRepository.Update(updatedRequest);
+                    // передаём в Update id и именно обновлённый объект
+                    _requestRepository.Update(selectedRequest.Id, updatedRequest);
                     LoadServiceRequests();
                     MessageBox.Show("Заявка успешно обновлена!", "Успех",
                         MessageBoxButton.OK, MessageBoxImage.Information);
@@ -82,7 +84,8 @@ namespace ITServiceApp.UI
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    _requestRepository.Delete(selectedRequest);
+                    // передаём в Delete идентификатор, а не весь объект
+                    _requestRepository.Delete(selectedRequest.Id);
                     LoadServiceRequests();
                     MessageBox.Show("Заявка успешно удалена!", "Успех",
                         MessageBoxButton.OK, MessageBoxImage.Information);
@@ -100,7 +103,6 @@ namespace ITServiceApp.UI
             LoadServiceRequests();
         }
 
-       
         private void StatisticsButton_Click(object sender, RoutedEventArgs e)
         {
             var statisticsService = new StatisticsService(_requestRepository);
